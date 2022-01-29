@@ -1,14 +1,14 @@
-<template>
+ <template>
   <ul class="catalog__list">
     <template v-for="(product) in products">
-      <ProductItem :product="product" :key="product.title">
+      <ProductItem :product="product" :key="product.id">
       </ProductItem>
     </template>
   </ul>
 </template>
 
 <script>
-import ProductItem from './ProductItem.vue';
+import ProductItem from '@/components/ProductItem.vue';
 
 export default {
   components: { ProductItem },

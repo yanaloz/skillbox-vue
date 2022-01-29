@@ -4,7 +4,7 @@
       <a class="pagination__link pagination__link--arrow"
          :class="{'pagination__link--disabled' : page === 1}"
          aria-label="Предыдущая страница"
-         @click.prevent="$event.preventDefault(); paginate(--page)">
+         @click.prevent="paginate((page !== 1) ? page - 1 : page)">
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-left"></use>
         </svg>
@@ -12,7 +12,7 @@
     </li>
     <li class="pagination__item" v-for="pageNumber in pages" :key="pageNumber">
       <a href="#" class="pagination__link" :class="{'pagination__link--current':
-      pageNumber === page}" @click.prevent="$event.preventDefault(); paginate(pageNumber)">
+      pageNumber === page}" @click.prevent="paginate(pageNumber)">
         {{ pageNumber }}
       </a>
     </li>
@@ -20,7 +20,7 @@
       <a class="pagination__link pagination__link--arrow" href="#"
          :class="{'pagination__link--disabled' : page === pages}"
          aria-label="Следующая страница"
-         @click.prevent="$event.preventDefault(); paginate(++page)">
+         @click.prevent="paginate((page !== pages) ? page + 1 : page)">
         <svg width="8" height="14" fill="currentColor">
           <use xlink:href="#icon-arrow-right"></use>
         </svg>
