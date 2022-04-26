@@ -27,6 +27,7 @@ import gotoPage from '@/helpers/gotoPage';
 import numberFormat from '@/helpers/numberFormat';
 
 export default {
+
   components: { ColorList },
   filters: {
     numberFormat,

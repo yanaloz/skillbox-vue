@@ -103,7 +103,7 @@
             </fieldset>
 
             <div class="item__row">
-              <ProductCounter :amount="productAmount"/>
+              <ProductCounter :count.sync="productAmount"/>
 
               <button class="button button--primery" type="submit">
                 В корзину

@@ -1,10 +1,9 @@
 export default function fullProductsQuantity(value) {
-  const lastSymbol = +String(value).slice(-1);
-  if (value > 10 && value < 15) {
-    return `${value} товаров`;
-  } else if (lastSymbol === 1) {
+  const oneLastSymbol = +String(value).slice(-1);
+  const twoLastSymbol = +String(value).slice(-2, 2);
+  if (oneLastSymbol === 1 && twoLastSymbol !== 11) {
     return `${value} товар`;
-  } else if (lastSymbol > 1 && lastSymbol < 5) {
+  } else if ((oneLastSymbol > 1 && oneLastSymbol < 5) && (twoLastSymbol < 12 || twoLastSymbol > 15)) {
     return `${value} товара`;
   } else {
     return `${value} товаров`;
