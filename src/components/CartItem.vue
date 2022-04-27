@@ -11,22 +11,7 @@
                 Артикул: {{ item.product.id  }}
               </span>
 
-
-    <div class="product__counter form__counter">
-      <button type="button" aria-label="Убрать один товар">
-        <svg width="10" height="10" fill="currentColor">
-          <use xlink:href="#icon-minus"></use>
-        </svg>
-      </button>
-
-      <input type="text" v-model.number="amount" name="count">
-
-      <button type="button" aria-label="Добавить один товар">
-        <svg width="10" height="10" fill="currentColor">
-          <use xlink:href="#icon-plus"></use>
-        </svg>
-      </button>
-    </div>
+      <ProductCounter :count.sync="amount" class="product__counter"/>
 
     <b class="product__price">
       {{ item.amount * item.product.price | numberFormat }} ₽
@@ -43,9 +28,11 @@
 
 <script>
   import numberFormat from '@/helpers/numberFormat';
+  import ProductCounter from '@/components/ProductCounter';
   import { mapMutations } from 'vuex';
 
   export default {
+    components: { ProductCounter },
     filters: {numberFormat},
     props: ['item'],
     computed: {
