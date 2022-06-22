@@ -1,11 +1,10 @@
 <template>
   <ul class="colors colors--black">
-    <template v-for="(color, index) in colors">
-      <li class="colors__item" :key="index">
+    <template v-for="color in colors">
+      <li class="colors__item" :key="color.id">
         <label class="colors__label">
-          <input class="colors__radio sr-only" type="radio" :value="color" v-model="checkedColor"
-                 checked="">
-          <span class="colors__value" :style="{ 'background-color': color }">
+          <input class="colors__radio sr-only" type="radio" :value="color.title">
+          <span class="colors__value" :style="{ 'background-color': color.code }">
                   </span>
         </label>
       </li>
@@ -18,7 +17,6 @@ export default {
   props: ['colors'],
   data() {
     return {
-      checkedColor: '#73B6EA',
     };
   },
 };

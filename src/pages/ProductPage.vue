@@ -1,5 +1,7 @@
 <template>
-  <main class="content container">
+  <main class="content container" v-if="productLoading">Загрузка товара...</main>
+  <main class="content container" v-else-if="productLoadingFailed">Ошибка загрузки</main>
+  <main class="content container" v-else>
     <div class="content__top">
       <ul class="breadcrumbs">
         <li class="breadcrumbs__item">
@@ -24,7 +26,7 @@
       <div class="item__pics pics">
         <div class="pics__wrapper">
           <img width="570" height="570"
-               :src="product.image" srcset="img/phone-square@2x.jpg 2x" :alt="product.title">
+               :src="product.image" :alt="product.title">
         </div>
       </div>
 
@@ -105,10 +107,12 @@
             <div class="item__row">
               <ProductCounter :count.sync="productAmount"/>
 
-              <button class="button button--primery" type="submit">
+              <button class="button button--primery" type="submit" :disabled="productAddSending">
                 В корзину
               </button>
             </div>
+            <div v-show="productAdded">Товар добавлен в корзину</div>
+            <div v-show="productAddSending">Добавление товара корзину...</div>
           </form>
         </div>
       </div>
@@ -182,16 +186,23 @@
 </template>
 
 <script>
-  import products from '@/data/products';
-  import categories from '@/data/categories';
   import gotoPage from '@/helpers/gotoPage';
   import numberFormat from '@/helpers/numberFormat';
   import ProductCounter from '@/components/ProductCounter';
+  import axios from 'axios';
+  import {API_BASE_URL} from '../config';
+  import { mapActions } from 'vuex';
 
   export default {
     data() {
       return {
-        productAmount: 1
+        productAmount: 1,
+        productData: null,
+        productLoading: false,
+        productLoadingFailed: false,
+
+        productAdded: false,
+        productAddSending: false
       };
     },
     components: { ProductCounter },
@@ -200,23 +211,47 @@
     },
     computed: {
       product() {
-        return products.find((product) => product.id === +this.$route.params.id);
+        const product = this.productData;
+        return {
+          ...product,
+          image: product.image.file.url
+        }
       },
       category() {
-        return categories.find((category) => category.id === this.product.categoryId);
+        return this.productData.category;
       },
     },
     methods: {
+      ...mapActions(['addProductToCart']),
       gotoPage,
       addToCart() {
-        this.$store.commit(
-          'addProductToCart',
-          {
-            productId: this.product.id,
-            amount: this.productAmount
-          }
-        );
+        this.productAdded = false;
+        this.productAddSending = true;
+        this.addProductToCart({productId: this.product.id, amount: this.productAmount})
+          .then(() => {
+            this.productAdded = true;
+            this.productAddSending = false;
+          });
       },
+      loadProduct() {
+        this.productLoading = true;
+        this.productLoadingFailed = false;
+        axios.get(API_BASE_URL + '/api/products/' + this.$route.params.id)
+          .then((response) => this.productData = response.data)
+          .catch(() => this.productLoadingFailed = true)
+          .then(() => this.productLoading = false);
+      }
     },
+    created() {
+      this.loadProduct();
+    },
+    watch: {
+      '$route.params.id': {
+        handler() {
+          this.loadProduct();
+        },
+        immediate: true
+      }
+    }
   };
 </script>
