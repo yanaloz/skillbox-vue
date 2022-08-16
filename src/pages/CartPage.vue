@@ -25,7 +25,11 @@
     <section class="cart">
       <form class="cart__form form" action="#" method="POST">
         <div class="cart__field">
-          <ul class="cart__list" >
+          <ul class="cart__list" v-if="$store.state.cartLoading">Загрузка корзины...
+          </ul>
+          <ul class="cart__list" v-else-if="$store.state.cartLoadingFailed">Ошибка загрузки
+          </ul>
+          <ul class="cart__list"  v-else>
             <CartItem v-for="item in products" :key="item.productId" :item="item"/>
           </ul>
         </div>

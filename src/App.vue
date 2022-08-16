@@ -13,7 +13,9 @@
           8 800 600 90 09
         </a>
 
-        <CartIndicator/>
+         <CartIndicator/>
+
+
       </div>
     </header>
 
@@ -88,7 +90,7 @@
         </ul>
 
         <p class="footer__desc">Все права наматериалы, находящиеся на сайте,
-          охраняются в соответствии  с
+          охраняются в соответствии с
           законодательством РФ,
           в том числе об авторском праве и смежных правах.</p>
 
@@ -114,21 +116,22 @@
 </template>
 
 <script>
-import CartIndicator from './components/CartIndicator.vue';
-import { mapActions, mapMutations } from 'vuex';
+  import CartIndicator from './components/CartIndicator.vue';
 
-export default {
-  components: { CartIndicator },
-  created() {
-    const userAccessKey = localStorage.getItem('userAccessKey');
-    if (userAccessKey) {
-      this.updateUserAccessKey(userAccessKey);
+  import {mapActions, mapMutations} from 'vuex';
+
+  export default {
+    components: {CartIndicator},
+    created() {
+      const userAccessKey = localStorage.getItem('userAccessKey');
+      if (userAccessKey) {
+        this.updateUserAccessKey(userAccessKey);
+      }
+      this.loadCart();
+    },
+    methods: {
+      ...mapActions(['loadCart']),
+      ...mapMutations(['updateUserAccessKey'])
     }
-    this.loadCart();
-  },
-  methods: {
-    ...mapActions(['loadCart']),
-    ...mapMutations(['updateUserAccessKey'])
-  }
-};
+  };
 </script>

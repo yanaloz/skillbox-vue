@@ -17,9 +17,9 @@ export default new Vuex.Store({
     cartLoadingFailed: false,
   },
   mutations: {
-    updateCartProductAmount(state, {productId, amount}){
+    updateCartProductAmount(state, {productId, amount}) {
       const item = state.cartProducts.find(item => item.productId === productId);
-      if(item){
+      if (item) {
         item.amount = amount;
       }
     },
@@ -54,14 +54,14 @@ export default new Vuex.Store({
         }
       });
     },
-    cartTotalPrice(state, getters){
+    cartTotalPrice(state, getters) {
       return getters.cartDetailProducts.reduce((acc, item) => (item.product.price * item.amount) + acc, 0);
     }
   },
   actions: {
     loadCart(context) {
-      // state.cartLoading = true;
-      // state.cartLoadingFailed = false;
+      context.state.cartLoading = true;
+      context.state.cartLoadingFailed = false;
       return axios
         .get(API_BASE_URL + '/api/baskets', {
           params: {
@@ -69,20 +69,20 @@ export default new Vuex.Store({
           }
         })
         .then(response => {
-          if(!context.state.userAccessKey) {
+          if (!context.state.userAccessKey) {
             localStorage.setItem('userAccessKey', response.data.user.accessKey);
             context.commit('updateUserAccessKey', response.data.user.accessKey);
           }
           context.commit('updateCartProductsData', response.data.items);
           context.commit('syncCartProducts');
         })
-        // .catch(() => state.cartLoadingFailed = true)
-        // .then(() => state.cartLoading = false);
+      .catch(() => context.state.cartLoadingFailed = true)
+      .then(() => context.state.cartLoading = false);
     },
     addProductToCart(context, {productId, amount}) {
-      return (new Promise (resolve => setTimeout(resolve, 1500)))
+      return (new Promise(resolve => setTimeout(resolve, 1500)))
         .then(() => {
-         return axios
+          return axios
             .post(API_BASE_URL + '/api/baskets/products', {
               productId: productId,
               quantity: amount
@@ -98,26 +98,24 @@ export default new Vuex.Store({
         })
     },
     deleteCartProduct(context, productId) {
-      return (new Promise (resolve => setTimeout(resolve, 1500)))
-        .then(() => {
-          return axios
-            .delete(API_BASE_URL + '/api/baskets/products', {
-              productId: productId,
-            }, {
-              params: {
-                userAccessKey: context.state.userAccessKey
-              }
-            })
-            .then(response => {
-              context.commit('updateCartProductsData', response.data.items);
-              context.commit('syncCartProducts');
-            })
+      return axios
+        .delete(API_BASE_URL + '/api/baskets/products', {
+          data: {
+            productId,
+          },
+          params: {
+            userAccessKey: context.state.userAccessKey
+          }
+        })
+        .then(response => {
+          context.commit('updateCartProductsData', response.data.items);
+          context.commit('syncCartProducts');
         })
     },
     updateCartProductAmount(context, {productId, amount}) {
       context.commit('updateCartProductAmount', {productId, amount});
 
-      if(amount < 1) {
+      if (amount < 1) {
         return;
       }
 

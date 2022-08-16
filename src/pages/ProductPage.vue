@@ -111,7 +111,7 @@
                 В корзину
               </button>
             </div>
-            <div v-show="productAdded">Товар добавлен в корзину</div>
+            <div v-show="productAdded">Товар добавлен</div>
             <div v-show="productAddSending">Добавление товара корзину...</div>
           </form>
         </div>
