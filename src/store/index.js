@@ -23,9 +23,6 @@ export default new Vuex.Store({
         item.amount = amount;
       }
     },
-    // deleteCartProduct(state, productId) {
-    //   state.cartProducts = state.cartProducts.filter(item => item.productId !== productId);
-    // },
     updateUserAccessKey(state, accessKey) {
       state.userAccessKey = accessKey;
     },
@@ -97,11 +94,11 @@ export default new Vuex.Store({
             })
         })
     },
-    deleteCartProduct(context, productId) {
+    deleteCartProduct(context, productId ) {
       return axios
         .delete(API_BASE_URL + '/api/baskets/products', {
           data: {
-            productId,
+            productId
           },
           params: {
             userAccessKey: context.state.userAccessKey

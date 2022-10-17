@@ -5,9 +5,8 @@
       <use xlink:href="#icon-cart"></use>
     </svg>
 
-    <!--<i class="header__count&#45;&#45;spinner icon icon-spinner animate-spin"></i>-->
     <span class="header__count"
-          aria-label="Количество товаров">{{ $store.state.cartProducts.length }}</span>
+          aria-label="Количество товаров" >{{ $store.state.cartProducts.length }}</span>
 
   </router-link>
 </template>

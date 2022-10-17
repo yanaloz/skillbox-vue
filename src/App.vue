@@ -12,8 +12,11 @@
         <a class="header__tel" href="tel:8 800 600 90 09">
           8 800 600 90 09
         </a>
+        <div class="header__spinner" v-if="cartIndicatorLoading">
+          <i class="icon icon-spinner animate-spin"></i>
+        </div>
 
-         <CartIndicator/>
+        <CartIndicator v-else/>
 
 
       </div>
@@ -116,18 +119,25 @@
 </template>
 
 <script>
-  import CartIndicator from './components/CartIndicator.vue';
+  import CartIndicator from '@/components/CartIndicator.vue';
 
-  import {mapActions, mapMutations} from 'vuex';
+  import { mapActions, mapMutations } from 'vuex';
 
   export default {
-    components: {CartIndicator},
+    components: { CartIndicator },
+    data() {
+      return {
+        cartIndicatorLoading: false,
+      }
+    },
     created() {
       const userAccessKey = localStorage.getItem('userAccessKey');
       if (userAccessKey) {
         this.updateUserAccessKey(userAccessKey);
       }
+      this.cartIndicatorLoading = true;
       this.loadCart();
+      this.cartIndicatorLoading = false;
     },
     methods: {
       ...mapActions(['loadCart']),

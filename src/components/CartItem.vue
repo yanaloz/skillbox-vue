@@ -29,7 +29,6 @@
 <script>
   import numberFormat from '@/helpers/numberFormat';
   import ProductCounter from '@/components/ProductCounter';
-  import { mapMutations } from 'vuex';
   import { mapActions } from 'vuex';
 
   export default {
@@ -49,7 +48,7 @@
     methods: {
       ...mapActions(['deleteCartProduct']),
       deleteProduct() {
-        this.deleteCartProduct({productId: this.item.product.id});
+        this.deleteCartProduct(this.item.productId);
       }
     }
   }
