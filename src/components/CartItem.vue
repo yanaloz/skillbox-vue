@@ -10,7 +10,6 @@
     <span class="product__code">
                 Артикул: {{ item.product.id  }}
               </span>
-
       <ProductCounter :count.sync="amount" class="product__counter"/>
 
     <b class="product__price">
@@ -48,6 +47,7 @@
     methods: {
       ...mapActions(['deleteCartProduct']),
       deleteProduct() {
+        console.log()
         this.deleteCartProduct(this.item.productId);
       }
     }

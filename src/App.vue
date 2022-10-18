@@ -130,13 +130,13 @@
         cartIndicatorLoading: false,
       }
     },
-    created() {
+    async created() {
       const userAccessKey = localStorage.getItem('userAccessKey');
       if (userAccessKey) {
         this.updateUserAccessKey(userAccessKey);
       }
       this.cartIndicatorLoading = true;
-      this.loadCart();
+      await this.loadCart();
       this.cartIndicatorLoading = false;
     },
     methods: {

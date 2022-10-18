@@ -15,6 +15,7 @@ export default new Vuex.Store({
 
     cartLoading: false,
     cartLoadingFailed: false,
+    cartItemRemoving: false,
   },
   mutations: {
     updateCartProductAmount(state, {productId, amount}) {
@@ -95,6 +96,7 @@ export default new Vuex.Store({
         })
     },
     deleteCartProduct(context, productId ) {
+      context.state.cartItemRemoving = true;
       return axios
         .delete(API_BASE_URL + '/api/baskets/products', {
           data: {
@@ -108,6 +110,7 @@ export default new Vuex.Store({
           context.commit('updateCartProductsData', response.data.items);
           context.commit('syncCartProducts');
         })
+        .then( () => context.state.cartItemRemoving = false);
     },
     updateCartProductAmount(context, {productId, amount}) {
       context.commit('updateCartProductAmount', {productId, amount});

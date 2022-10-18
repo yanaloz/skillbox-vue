@@ -20,6 +20,9 @@
       <span class="content__info">
         {{ products.length | fullProductsQuantity }}
       </span>
+      <div v-show="$store.state.cartItemRemoving">
+      Удаление товара из корзины...
+      </div>
     </div>
 
     <section class="cart">
